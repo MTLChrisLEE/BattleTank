@@ -59,7 +59,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LauchSpeed)
 		false,
 		0,
 		0,
-		ESuggestProjVelocityTraceOption::DoNotTrace
+		ESuggestProjVelocityTraceOption::DoNotTrace // Paramater must be present to prevent bug
 	);
 
 	if (bHaveAimSolution) {
@@ -67,7 +67,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LauchSpeed)
 		MoveBarrelTowards(AimDirection);
 		auto CurrentTankName = GetOwner()->GetName();
 		auto BarrelLocation = Barrel->GetComponentLocation().ToString();
-		//UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s from %s with speed %f to %s"), *CurrentTankName, *HitLocation.ToString(), *BarrelLocation, LauchSpeed, *AimDirection.ToString())
+		UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s from %s with speed %f to %s"), *CurrentTankName, *HitLocation.ToString(), *BarrelLocation, LauchSpeed, *AimDirection.ToString())
 		
 	}
 	else {
@@ -89,12 +89,18 @@ void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
+	// Work-out difference between current barrel roation, and AimDirection
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *AimAsRotator.ToString());
 
 	Barrel->Elevate(DeltaRotator.Pitch);
-	Turret->Rotate(DeltaRotator.Yaw);
+	
+	if (FMath::Abs(DeltaRotator.Yaw) < 180) {
+		Turret->Rotate(DeltaRotator.Yaw);
+	}
+	else {
+		Turret->Rotate(-DeltaRotator.Yaw);
 
+	}
 }
