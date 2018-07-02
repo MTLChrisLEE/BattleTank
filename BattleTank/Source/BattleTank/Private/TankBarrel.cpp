@@ -19,7 +19,7 @@ void UTankBarrel::Elevate(float RelativeSpeed) {
 
 
 	auto Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("Barrel->Elevate() Called %f"), Time)
+	//UE_LOG(LogTemp, Warning, TEXT("Barrel->Elevate() Called %f"), Time)
 
 	
 
