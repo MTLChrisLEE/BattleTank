@@ -67,11 +67,11 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LauchSpeed)
 		MoveBarrelTowards(AimDirection);
 		auto CurrentTankName = GetOwner()->GetName();
 		auto BarrelLocation = Barrel->GetComponentLocation().ToString();
-		UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s from %s with speed %f to %s"), *CurrentTankName, *HitLocation.ToString(), *BarrelLocation, LauchSpeed, *AimDirection.ToString())
+		//UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s from %s with speed %f to %s"), *CurrentTankName, *HitLocation.ToString(), *BarrelLocation, LauchSpeed, *AimDirection.ToString())
 		
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("NO SOLUTION FOUND"))
+		//UE_LOG(LogTemp, Warning, TEXT("NO SOLUTION FOUND"))
 	}
 }
 
