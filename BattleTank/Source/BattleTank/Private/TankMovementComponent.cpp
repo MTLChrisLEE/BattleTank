@@ -15,7 +15,7 @@ void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* 
 
 void UTankMovementComponent::IntendMoveForward(float Throw){
 
-	UE_LOG(LogTemp, Warning, TEXT("Intend Move forward %f"), Throw);
+	//UE_LOG(LogTemp, Warning, TEXT("Intend Move forward %f"), Throw);
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
 
@@ -26,6 +26,29 @@ void UTankMovementComponent::IntendTurnRIght(float Throw)
 {
 	LeftTrack->SetThrottle(-Throw);
 	RightTrack->SetThrottle(Throw);
+
+
+}
+
+//Path Finding Logic calls this method
+// https://imgur.com/a/B6Siqi1
+
+void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
+{
+	auto TankName = GetOwner()->GetName();
+	auto AIForwardIntention = MoveVelocity.GetSafeNormal(); 
+	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+
+	IntendMoveForward(FVector::DotProduct(TankForward, AIForwardIntention));
+
+	auto TurnRightVector = FVector::CrossProduct(TankForward, AIForwardIntention);
+
+
+	UE_LOG(LogTemp, Warning, TEXT("AI vectroing to %s"), *TurnRightVector.ToString())
+
+	
+	IntendTurnRIght(FVector::CrossProduct(TankForward, AIForwardIntention).Z);
+
 
 
 }

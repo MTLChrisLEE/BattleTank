@@ -3,6 +3,7 @@
 #include "Tank.h"
 #include "Engine/World.h"
 #include "Projectile.h"
+#include "TankMovementComponent.h"
 #include "TankBarrel.h"
 
 
@@ -14,7 +15,7 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
 
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Componenent"));
-
+	//TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Componenent"));
 }
 
 void ATank::AimAt(FVector HitLocation)
@@ -57,10 +58,7 @@ void ATank::SetTurretReference(UTankTurret * TurretToSet)
 void ATank::Fire()
 {
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-
-
-	UE_LOG(LogTemp, Warning, TEXT("FIRE!!!!!!!!!!!!!!!!!!!!!!!!!!!"));
-
+	
 	if (Barrel && isReloaded) {
 
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
