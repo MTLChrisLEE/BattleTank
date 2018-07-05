@@ -26,12 +26,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Input)
 		void IntendTurnRIght(float Throw);
 
+private:
 	//Path Finding Logic calls this method
 	// https://imgur.com/a/B6Siqi1
 	void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
-
-
-private:
 
 	UTankTrack * LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;

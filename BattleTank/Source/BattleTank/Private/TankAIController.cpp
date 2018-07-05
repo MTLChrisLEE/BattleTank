@@ -17,14 +17,11 @@ void ATankAIController::BeginPlay()
 	if (!ControlledTank) {
 		UE_LOG(LogTemp, Error, TEXT("AI NOT POSSESSING A TANK"))
 	}
-	UE_LOG(LogTemp, Warning, TEXT("AI POSSESSING A TANK %s"), *(ControlledTank->GetName()));
-
 
 	auto PlayerTank = GetPlayerTank();
 	if (!PlayerTank) {
 		UE_LOG(LogTemp, Error, TEXT("AI CANNOT FIND THE TANK"))
 	}
-	UE_LOG(LogTemp, Warning, TEXT("AI FOUND THE TANK %s"), *(PlayerTank->GetName()));
 }
 
 ATank * ATankAIController::GetPlayerTank() const
