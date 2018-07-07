@@ -42,7 +42,7 @@ void ATankAIController::Tick(float DeltaTime)
 	auto ControlledTank = GetPawn();
 
 
-	if (!ensure(PlayerTank&&ControlledTank)) {
+	if (!ensure(PlayerTank && ControlledTank)) { return; }
 
 		MoveToActor(PlayerTank, 3000);
 
@@ -50,5 +50,5 @@ void ATankAIController::Tick(float DeltaTime)
 
 		AimingComponent->AimAt(PlayerTank->GetActorLocation());
 		AimingComponent->Fire();
-	}
+	
 }
