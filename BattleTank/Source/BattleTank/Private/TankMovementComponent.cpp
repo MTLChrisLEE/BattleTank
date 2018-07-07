@@ -6,7 +6,7 @@
 
 void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet) 
 {
-	if (!LeftTrackToSet || !RightTrackToSet) {
+	if (!ensure(LeftTrackToSet || !RightTrackToSet)) {
 		return;
 	}
 	LeftTrack = LeftTrackToSet;

@@ -39,7 +39,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LauchSpeed)
 {
-	if (!Barrel) {
+	if (!ensure(Barrel)) {
 		UE_LOG(LogTemp, Warning, TEXT("NO BARREL"))
 			return;
 	}
@@ -84,7 +84,7 @@ void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * T
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
 
-	if (!Barrel || !Turret) { return;  }
+	if (!ensure(Barrel || !Turret)) { return;  }
 
 	// Work-out difference between current barrel roation, and AimDirection
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
