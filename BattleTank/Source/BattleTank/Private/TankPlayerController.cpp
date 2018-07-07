@@ -2,34 +2,19 @@
 
 
 #include "TankPlayerController.h"
+#include "TankAimingComponent.h"
 #include "Engine/World.h"
 
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
-	auto ControlledTank = GetControlledTank();
-	if (!ensure(ControlledTank)) {
-		UE_LOG(LogTemp, Error, TEXT("PLAYER NOT POSSESSING A TANK"))
-	}
-	UE_LOG(LogTemp, Warning, TEXT("PLAYER POSSESSING A TANK %s"), *(ControlledTank->GetName()));
-
-	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
-	if (ensure(AimingComponent)) {
-		FoundAimingComponent(AimingComponent);
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("PLAYER Controller cannot find aiming component at Begin Play"));
-
-	}
-
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent)) { return; }
+	FoundAimingComponent(AimingComponent);
 }
 
 
-ATank * ATankPlayerController::GetControlledTank() const {
-	return Cast<ATank>(GetPawn());
-}
 
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -41,15 +26,14 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!ensure(GetControlledTank())) { return; }
-
-	FVector HitLocation;
-	bool bGotHitLocation = GetSightRayHitLocation(HitLocation);
-	//UE_LOG(LogTemp, Warning, TEXT("bGotHitLocation: %i"), bGotHitLocation);
-	if (bGotHitLocation) {
-			GetControlledTank()->AimAt(HitLocation);
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent)) { return; }
+		
+	FVector HitLocation; // Out parameter
+	if (GetSightRayHitLocation(HitLocation)) // Has "side-effect", is going to line trace
+	{
+		AimingComponent->AimAt(HitLocation);
 	}
-
 }
 
 
@@ -76,19 +60,18 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector &
 bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector & OutHitLocation) const
 {
 	FHitResult HitResult;
-
 	auto StartLocation = PlayerCameraManager->GetCameraLocation();
-	auto EndLocation = StartLocation + LookDirection * LineTraceRange;
-
+	auto EndLocation = StartLocation + (LookDirection * LineTraceRange);
 	if (GetWorld()->LineTraceSingleByChannel(
 		HitResult,
 		StartLocation,
 		EndLocation,
 		ECollisionChannel::ECC_Visibility)
-
-		) {
+		)
+	{
 		OutHitLocation = HitResult.Location;
 		return true;
 	}
-		return false;
+	OutHitLocation = FVector(0);
+	return false;
 }

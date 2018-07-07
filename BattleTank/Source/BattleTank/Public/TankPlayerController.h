@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Tank.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
@@ -22,8 +21,7 @@ public:
 	void AimTowardsCrosshair();
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-		ATank * GetControlledTank() const;
+	
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 		void FoundAimingComponent(UTankAimingComponent* AimingCompRef);
