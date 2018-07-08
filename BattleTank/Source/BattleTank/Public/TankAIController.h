@@ -17,7 +17,7 @@ class BATTLETANK_API ATankAIController : public AAIController
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-		float AccceptanceRadius = 80000;
+		float AccceptanceRadius = 3000;
 		
 public:
 	ATank * GetControlledTank() const;

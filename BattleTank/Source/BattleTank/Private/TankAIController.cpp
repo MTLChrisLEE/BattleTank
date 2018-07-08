@@ -16,7 +16,7 @@ void ATankAIController::BeginPlay()
 
 	auto ControlledTank = GetControlledTank();
 	if (!ensure(ControlledTank)) {
-		UE_LOG(LogTemp, Error, TEXT("AI NOT POSSESSING A TANK"))
+		UE_LOG(LogTemp, Error, TEXT("AI NOT POSSESSING A TANK LUL"))
 	}
 
 	auto PlayerTank = GetPlayerTank();
@@ -26,7 +26,7 @@ void ATankAIController::BeginPlay()
 }
 
 ATank * ATankAIController::GetPlayerTank() const
-{	
+{
 	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	if (!ensure(PlayerPawn)) {
 		return nullptr;
@@ -44,15 +44,16 @@ void ATankAIController::Tick(float DeltaTime)
 
 	if (!ensure(PlayerTank && ControlledTank)) { return; }
 
-		MoveToActor(PlayerTank, AccceptanceRadius);
+	MoveToActor(PlayerTank, AccceptanceRadius);
 
-		auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 
-		AimingComponent->AimAt(PlayerTank->GetActorLocation());
+	AimingComponent->AimAt(PlayerTank->GetActorLocation());
 
-		if (AimingComponent->GetFiringState() == EFiringState::Ready) {
-			AimingComponent->Fire();
-		}
-	
+	if (AimingComponent->GetFiringState() == EFiringState::Ready) {
+		AimingComponent->Fire();
+		UE_LOG(LogTemp, Error, TEXT("AI FIRING"))
+	}
+
 }
 
