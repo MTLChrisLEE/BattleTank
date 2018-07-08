@@ -14,7 +14,11 @@ UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+		float AccceptanceRadius = 80000;
+		
 public:
 	ATank * GetControlledTank() const;
 
@@ -23,4 +27,5 @@ public:
 	ATank* GetPlayerTank() const;
 
 	void Tick(float DeltaTime) override;
+
 };
