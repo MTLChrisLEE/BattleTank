@@ -52,7 +52,6 @@ void ATankAIController::Tick(float DeltaTime)
 
 	if (AimingComponent->GetFiringState() == EFiringState::Ready) {
 		AimingComponent->Fire();
-		UE_LOG(LogTemp, Error, TEXT("AI FIRING"))
 	}
 
 }

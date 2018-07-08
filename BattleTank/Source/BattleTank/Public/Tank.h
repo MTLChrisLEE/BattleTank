@@ -21,7 +21,8 @@ public:
 	float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
 	void AimAt(FVector HitLocation);
 
-
+	UFUNCTION(BlueprintPure, Category = "Health")
+		float GetHealthPercent() const;
 
 
 private:	
